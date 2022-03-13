@@ -1,0 +1,95 @@
+version: '3.7'
+
+services:
+
+  redis:
+    image: redis
+    command: [ 'redis-server', '--bind', 'redis', '--maxmemory', '256mb', '--maxmemory-policy', 'allkeys-lru', '--appendonly', 'yes' ]
+    restart: unless-stopped
+    expose:
+      - 6379
+    ports:
+      - 6379:6379
+
+#  postgres:
+#    image: "postgres" # use latest official postgres version
+#    env_file:
+#      - database.env # configure postgres
+#    volumes:
+#      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
+#    restart: unless-stopped
+#    expose:
+#      - 5432
+#    ports:
+#      - 5432:5432
+
+#  scheduler:
+#    build:
+#      context: .
+#    restart: unless-stopped
+#    command: [ 'celery', '-A', 'crawler.app', 'beat', '-S', 'redbeat.RedBeatScheduler', '--loglevel=INFO' ]
+#    env_file:
+#      - .env.dev
+#    networks:
+#      - default
+#    depends_on:
+#      - redis
+
+  crawler:
+    build:
+      context: .
+    restart: unless-stopped
+    command: [ "celery", "-A", "crawler.app", "worker", "--concurrency=1",
+               "--hostname=worker.crawler_q@%h", "--queues=crawler_q", "--loglevel=INFO" ]
+    env_file:
+      - .env.dev
+    networks:
+      - default
+    depends_on:
+      - redis
+
+  counter:
+    build:
+      context: .
+    restart: unless-stopped
+    command: [ "celery", "-A", "crawler.app", "worker", "--concurrency=1",
+               "--hostname=worker.counter_q@%h", "--queues=counter_q", "--loglevel=INFO" ]
+    env_file:
+      - .env.dev
+    networks:
+      - default
+    depends_on:
+      - redis
+
+  flower:
+    build:
+      context: .
+    restart: unless-stopped
+    command: [ 'celery','-A', 'crawler.app', 'flower', '--port=5555', '--url-prefix=/flower' ]
+    env_file:
+      - .env.dev
+    expose:
+      - 5555
+    networks:
+      - default
+    depends_on:
+      - redis
+
+  nginx:
+    image: nginx:latest
+    restart: unless-stopped
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+    networks:
+      - default
+    depends_on:
+      - flower
+
+networks:
+  default:
+    driver: bridge
+
+volumes:
+  database-data:
