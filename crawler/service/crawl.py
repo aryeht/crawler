@@ -1,4 +1,5 @@
 import random
+import time
 
 from crawler.adapters.cache import cache
 from crawler.domain.page import page
@@ -9,6 +10,7 @@ COUNTER_PREFIX = 'count'
 
 def download_page(url: str) -> page:
     """ The function returns an instance of page object """
+    time.sleep(random.randint(5, 15))
     return page(url=url, content='')
 
 

@@ -3,6 +3,9 @@
 SHELL := $(shell which bash)
 PROJECT := crawler
 
+include .env.dev
+export
+
 clean:
 	find . -name '*.py[co]' -delete
 	find . -name '*.skp' -delete
@@ -29,6 +32,10 @@ rebuild: clean
 	docker-compose exec crawler python cli/crawl.py
 	sleep 5
 	docker-compose logs -f crawler
+
+test: clean
+	poetry run coverage run -m pytest
+	poetry run coverage report -m
 
 %:
 	@:

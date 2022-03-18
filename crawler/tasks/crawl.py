@@ -1,5 +1,3 @@
-import datetime
-
 from celery import group
 from celery.utils.log import get_task_logger
 
