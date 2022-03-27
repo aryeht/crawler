@@ -16,9 +16,9 @@ def crawl(
         url,
         word
 ):
-    if is_already_crawled(url, word):
-        logger.info("word count: url %s has already been crawled for word %s", url, word)
-        return
+    # if is_already_crawled(url, word):
+    #     logger.info("word count: url %s has already been crawled for word %s", url, word)
+    #     return
 
     page = download_page(url)
     word_count = count_word_occurrences(page, word)

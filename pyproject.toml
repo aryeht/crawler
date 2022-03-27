@@ -5,10 +5,10 @@ description = ""
 authors = ["AryeH"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-celery = "5.1.2"
-redis = "^4.1.4"
-flower = "^1.0.0"
+python = "^3.9"
+celery = "5.2.2"
+redis = "^4.2.0"
+flower = {git = "https://github.com/mher/flower.git"}
 pytest-monitor = "^1.6.3"
 
 [tool.poetry.dev-dependencies]

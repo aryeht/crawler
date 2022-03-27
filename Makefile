@@ -28,7 +28,7 @@ rebuild: clean
 	sleep 2
 	docker-compose up -d --build crawler
 	sleep 3
-	docker-compose up -d --build flower nginx
+	docker-compose up -d --build
 	docker-compose exec crawler python cli/crawl.py
 	sleep 5
 	docker-compose logs -f crawler
