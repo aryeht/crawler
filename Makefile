@@ -36,6 +36,8 @@ rebuild: clean
 test: clean
 	poetry run coverage run -m pytest
 	poetry run coverage report -m
+	poetry run sqlite3 -echo -line .pymon "SELECT ITEM,MEM_USAGE FROM TEST_METRICS ORDER BY MEM_USAGE DESC LIMIT 5;"
+
 
 %:
 	@:
