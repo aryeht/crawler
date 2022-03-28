@@ -1,24 +1,28 @@
 from celery import group
 from celery.utils.log import get_task_logger
+from celery_singleton import Singleton
 
 from crawler.app import app
 from crawler.service.crawl import download_page, count_word_occurrences, get_links_in_page, is_already_crawled, \
     increment_url_word
+from crawler.tasks.timeout_task import timeout_task
 
 logger = get_task_logger(__name__)
 
 
 @app.task(
-    bind=True, name='crawl'
+    name='crawl',
+    # base=Singleton, unique_on=['url', 'word'],
+    autoretry_for=(Exception,), retry_kwargs={'max_retries': 1},  # Use specific Exception
 )
+@timeout_task
 def crawl(
-        self,
         url,
         word
 ):
-    # if is_already_crawled(url, word):
-    #     logger.info("word count: url %s has already been crawled for word %s", url, word)
-    #     return
+    if is_already_crawled(url, word):
+        logger.info("word count: url %s has already been crawled for word %s", url, word)
+        return
 
     page = download_page(url)
     word_count = count_word_occurrences(page, word)

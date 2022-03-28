@@ -10,6 +10,8 @@ celery = "5.2.2"
 redis = "^4.2.0"
 flower = {git = "https://github.com/mher/flower.git"}
 pytest-monitor = "^1.6.3"
+celery-singleton = "^0.3.1"
+celery-redbeat = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

@@ -23,24 +23,11 @@ services:
 #    ports:
 #      - 5432:5432
 
-#  scheduler:
-#    build:
-#      context: .
-#    restart: unless-stopped
-#    command: [ 'celery', '-A', 'crawler.app', 'beat', '-S', 'redbeat.RedBeatScheduler', '--loglevel=INFO' ]
-#    env_file:
-#      - .env.dev
-#    networks:
-#      - default
-#    depends_on:
-#      - redis
-
-  crawler:
+  scheduler:
     build:
       context: .
     restart: unless-stopped
-    command: [ "celery", "-A", "crawler.app", "worker", "--concurrency=1",
-               "--hostname=worker.crawler_q@%h", "--queues=crawler_q", "--loglevel=INFO" ]
+    command: [ 'celery', '-A', 'crawler.app', 'beat', '-S', 'redbeat.RedBeatScheduler', '--loglevel=INFO' ]
     env_file:
       - .env.dev
     networks:
@@ -48,12 +35,12 @@ services:
     depends_on:
       - redis
 
-  counter:
+  crawler:
     build:
       context: .
     restart: unless-stopped
     command: [ "celery", "-A", "crawler.app", "worker", "--concurrency=1",
-               "--hostname=worker.counter_q@%h", "--queues=counter_q", "--loglevel=INFO" ]
+               "--hostname=worker.crawler_q@%h", "--queues=crawler_q", "--loglevel=INFO" ]
     env_file:
       - .env.dev
     networks:

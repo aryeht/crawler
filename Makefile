@@ -30,8 +30,9 @@ rebuild: clean
 	sleep 3
 	docker-compose up -d --build
 	docker-compose exec crawler python cli/crawl.py
+	docker-compose exec crawler python cli/schedule_task.py schedule --when asap
 	sleep 5
-	docker-compose logs -f crawler
+	docker-compose logs -f scheduler crawler
 
 test: clean
 	poetry run coverage run -m pytest
