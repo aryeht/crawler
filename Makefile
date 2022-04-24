@@ -3,6 +3,7 @@
 SHELL := $(shell which bash)
 PROJECT := crawler
 
+include .env
 include .env.dev
 export
 
@@ -39,6 +40,11 @@ test: clean
 	poetry run coverage report -m
 	poetry run sqlite3 -echo -line .pymon "SELECT ITEM,MEM_USAGE FROM TEST_METRICS ORDER BY MEM_USAGE DESC LIMIT 5;"
 
+python:
+	python
+
+presentation:
+	docker run --rm --init -v $(PWD)/doc:/home/marp/app/ -e LANG=$LANG marpteam/marp-cli presentation.md --pdf
 
 %:
 	@:
