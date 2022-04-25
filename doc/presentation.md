@@ -62,7 +62,7 @@ https://docs.celeryq.dev/en/stable/getting-started/introduction.html#transports-
 
 --- 
 
-# Celery Intro 5 - how does it work ?
+# Celery Intro 5 - how does it work (signatures)?
 
 It needs to serialize whatever is necessary to execute a function: name + arguments 
 
@@ -85,6 +85,24 @@ s = signature('my_celery.add', args=(1, 2), kwargs={})
 result = s.apply().get()
 print(result)
 ```
+--- 
+
+# Celery Intro 6 - how does it work (concurrency)?
+
+ ## concurrency
+* Prefork
+* Eventlet, gevent
+* Single threaded (solo)
+---
+
+# Celery Intro 7 - how does it work (serialization)?
+
+ ## Serialization
+
+ * ~~pickle~~, **json**, yaml, msgpack
+ * zlib, bzip2 compression
+ * Cryptographic message signing
+
 ---
 
 # task orchestration
