@@ -23,17 +23,17 @@ validate: clean
 	flake8 app
 
 rebuild: clean
-	docker-compose down --remove
+	docker compose down
 	docker system prune -f
-	docker-compose up -d redis
+	docker compose up -d redis
 	sleep 2
-	docker-compose up -d --build crawler
+	docker compose up -d --build crawler
 	sleep 3
-	docker-compose up -d --build
-	docker-compose exec crawler python cli/crawl.py
-	docker-compose exec crawler python cli/schedule_task.py schedule --when asap
+	docker compose up -d --build
+	docker compose exec crawler python cli/crawl.py
+	docker compose exec crawler python cli/schedule_task.py schedule --when asap
 	sleep 5
-	docker-compose logs -f scheduler crawler
+	docker compose logs -f scheduler crawler
 
 test: clean
 	poetry run coverage run -m pytest

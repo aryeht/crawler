@@ -11,18 +11,6 @@ services:
     ports:
       - 6379:6379
 
-#  postgres:
-#    image: "postgres" # use latest official postgres version
-#    env_file:
-#      - database.env # configure postgres
-#    volumes:
-#      - database-data:/var/lib/postgresql/data/ # persist data even if container shuts down
-#    restart: unless-stopped
-#    expose:
-#      - 5432
-#    ports:
-#      - 5432:5432
-
   scheduler:
     build:
       context: .
