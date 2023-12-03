@@ -1,3 +1,35 @@
+# Python project showcase
+
+This project implements a dummy distributed web crawler that counts words. 
+It is implemented using Map/Reduce with Celery/Redis
+
+## Code architecture
+
+* DDD Domain driven design
+* TDD Test Driven Design
+
+## System Architecture
+
+* micro-service architecture
+* Queue + Workers
+
+## Monitoring
+
+* logs
+* metrics (prometheus + grafana)
+* Celery Flower
+
+## User Experience
+
+* CLI
+* Makefile
+
+## Python
+
+* dependency management: poetry
+* type annotations
+* test with `pytest` (celery tasks, service layer)
+
 # System requirements
 
  * docker
@@ -62,6 +94,12 @@ access shell with:
     poetry shell
 
 ## directory structure: DDD
+
+### Adapter pattern: Redis
+
+### Service Layer: Dummy crawler
+
+### Domain objects: Page, Page Results
 
 
 # Architecture: distributed tasks
